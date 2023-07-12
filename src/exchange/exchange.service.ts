@@ -7,14 +7,12 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
-import { EXCHANGE } from './exchange.mock';
 import { catchError, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ExchangeService {
   private apiUrl: string;
   private apiKey: string;
-  private exchange = EXCHANGE;
 
   constructor(
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
