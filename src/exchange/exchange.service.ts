@@ -8,6 +8,7 @@ import { Cache } from 'cache-manager';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map, tap } from 'rxjs/operators';
+import { currencyNames } from './currencyNames';
 
 @Injectable()
 export class ExchangeService {
@@ -37,6 +38,16 @@ export class ExchangeService {
         const data = response.data;
         delete data.disclaimer;
         delete data.license;
+
+        for (const key in data.rates) {
+          if (currencyNames[key]) {
+            data.rates[key] = {
+              name: currencyNames[key],
+              rate: data.rates[key],
+            };
+          }
+        }
+        console.log('Fetched exchange rate data:', data);
         return data;
       }),
       tap((data) => {
