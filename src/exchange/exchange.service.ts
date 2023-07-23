@@ -8,7 +8,7 @@ import { Cache } from 'cache-manager';
 import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { catchError, map, tap } from 'rxjs/operators';
-import { currencyNames } from './currencyNames';
+import { currencyDictionary } from './currencyDictionary';
 
 @Injectable()
 export class ExchangeService {
@@ -40,10 +40,13 @@ export class ExchangeService {
         delete data.license;
 
         for (const key in data.rates) {
-          if (currencyNames[key]) {
+          if (currencyDictionary[key]) {
             data.rates[key] = {
-              name: currencyNames[key],
+              name: currencyDictionary[key].name,
               rate: data.rates[key],
+              flag: currencyDictionary[key].flag,
+              symbol: currencyDictionary[key].symbol,
+              emoji: currencyDictionary[key].emoji,
             };
           }
         }
